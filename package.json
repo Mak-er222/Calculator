@@ -1,0 +1,17 @@
+{
+  "name": "calculator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "shx mkdir -p dist/css dist/js && shx cp templates/calculator.html dist/index.html && shx cp src/css/calculator.css dist/css/ && shx cp src/js/calculator.js dist/js/",
+    "serve": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "express": "^5.1.0",
+    "shx": "^0.4.0"
+  }
+}
