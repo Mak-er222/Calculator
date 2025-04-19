@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "rm -rf dist && mkdir -p dist/css dist/js && cp templates/calculator.html dist/index.html && cp src/css/* dist/css/ && cp src/js/* dist/js/",
+    "serve": "node server.js",
     "predeploy": "npm run build"
   },
   "keywords": [],

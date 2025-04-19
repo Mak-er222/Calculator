@@ -1,52 +1,108 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Calculator</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="description" content="We provide you with a calculator." />
-    <meta name="keywords" content="计算器, Calculator"/>
-    <link rel="stylesheet" href="css/calculator.css">
+    <title>角度计算器</title>
+    <style>
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .input-group {
+            margin: 10px 0;
+        }
+        input {
+            width: 200px;
+            padding: 5px;
+        }
+        button {
+            padding: 5px 15px;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+    </style>
 </head>
 <body>
-    <div class="calculator">
-        <table>
-            <tr>
-                <td colspan="4">
-                    <input type="text" id="display" readonly>
-                </td>
-            </tr>
-            <tr>
-                <td><button onclick="clearDisplay()">C</button></td>
-                <td><button onclick="appendToDisplay('/')">/</button></td>
-                <td><button onclick="appendToDisplay('*')">×</button></td>
-                <td><button onclick="appendToDisplay('-')">-</button></td>
-            </tr>
-            <tr>
-                <td><button onclick="appendToDisplay('7')">7</button></td>
-                <td><button onclick="appendToDisplay('8')">8</button></td>
-                <td><button onclick="appendToDisplay('9')">9</button></td>
-                <td rowspan="4"><button onclick="calculate()" style="height: 220px;">=</button></td>
-            </tr>
-            <tr>
-                <td><button onclick="appendToDisplay('4')">4</button></td>
-                <td><button onclick="appendToDisplay('5')">5</button></td>
-                <td><button onclick="appendToDisplay('6')">6</button></td>
-            </tr>
-            <tr>
-                <td><button onclick="appendToDisplay('1')">1</button></td>
-                <td><button onclick="appendToDisplay('2')">2</button></td>
-                <td><button onclick="appendToDisplay('3')">3</button></td>
-            </tr>
-            <tr>
-                <td colspan="2"><button onclick="appendToDisplay('0')" style="width: 120px;">0</button></td>
-                <td><button onclick="appendToDisplay('.')">.</button></td>
-            </tr>
-            <tr>
-                <td colspan="4"><button onclick="appendToDisplay('+')" style="width: 100%;">+</button></td>
-            </tr>
-        </table>
+    <div class="container">
+        <h1>角度计算器</h1>
+        <select id="conversionType">
+            <option value="dmsToDecimal">度分秒 → 十进制度</option>
+            <option value="decimalToDMS">十进制度 → 度分秒</option>
+        </select>
+        <div class="input-group">
+            <input type="text" id="input" placeholder="例如：1°2'3''">
+            <button onclick="convert()">转换</button>
+        </div>
+        <div id="result" class="result"></div>
     </div>
-</body> 
-<script src="js/calculator.js"></script>
+    <script>
+        // 动态更新输入提示
+        document.getElementById('conversionType').addEventListener('change', function() {
+            const input = document.getElementById('input');
+            input.placeholder = this.value === 'dmsToDecimal' 
+                ? "例如：1°2'3'' 或 1.2.3" 
+                : "例如：1.034166";
+        });
+
+        // 度分秒转十进制
+        function parseDMS(input) {
+            const parts = input.split(/[^\d.-]/g).filter(p => p !== '');
+            if (parts.length === 0) return NaN;
+            
+            const degreesValue = parseInt(parts[0], 10);
+            if (isNaN(degreesValue)) return NaN;
+            
+            const degreesAbs = Math.abs(degreesValue);
+            const minutes = parts.length > 1 ? parseFloat(parts[1]) : 0;
+            const seconds = parts.length > 2 ? parseFloat(parts[2]) : 0;
+            
+            const sign = degreesValue >= 0 ? 1 : -1;
+            return sign * (degreesAbs + minutes/60 + seconds/3600);
+        }
+
+        // 十进制转度分秒
+        function toDMS(decimal) {
+            const sign = decimal >= 0 ? 1 : -1;
+            decimal = Math.abs(decimal);
+            
+            const degrees = Math.floor(decimal);
+            const remainingMinutes = (decimal - degrees) * 60;
+            const minutes = Math.floor(remainingMinutes);
+            const seconds = (remainingMinutes - minutes) * 60;
+            
+            return {
+                degrees: degrees * sign,
+                minutes,
+                seconds: Number(seconds.toFixed(3))
+            };
+        }
+
+        // 转换处理
+        function convert() {
+            const input = document.getElementById('input').value.trim();
+            const conversionType = document.getElementById('conversionType').value;
+            const resultElement = document.getElementById('result');
+            
+            let result;
+            if (conversionType === 'dmsToDecimal') {
+                const decimal = parseDMS(input);
+                result = isNaN(decimal) 
+                    ? "无效的度分秒格式，示例：1°2'3'' 或 1.2.3"
+                    : `十进制度数：${decimal.toFixed(6)}°`;
+            } else {
+                const decimal = parseFloat(input);
+                if (isNaN(decimal)) {
+                    result = "无效的十进制格式，示例：1.034166";
+                } else {
+                    const dms = toDMS(decimal);
+                    result = `度分秒：${dms.degrees}°${dms.minutes}'${dms.seconds}''`;
+                }
+            }
+            resultElement.textContent = result;
+        }
+    </script>
+</body>
 </html>
