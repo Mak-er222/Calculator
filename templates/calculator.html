@@ -1,23 +1,51 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>计算器</title>
-    <meta charset='utf-8'>
+<head>
+    <title>Calculator</title>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="description" content="We provide you with a calculator." />
-    <meta name="keywords" content="计算器, calculator" />
+    <meta name="keywords" content="计算器, Calculator"/>
     <link rel="stylesheet" href="../static/css/calculator.css">
-  </head>
-  <body>
-    <div id="calculator">
-      <table>
-        <thead>
-          <tr>
-            <input type="text" id="calculator-input" />
-          </tr>
-        </thead>
-      </table>
-    </div>
-  </body>
-  <script type="text/javascript" src="../static/js/calculator.js"></script>
+</head>
+<body>
+    <table>
+        <tr>
+            <td colspan="4">
+                <input type="text" id="display" readonly>
+            </td>
+        </tr>
+        <tr>
+            <td><button onclick="clearDisplay()">C</button></td>
+            <td><button onclick="appendToDisplay('/')">/</button></td>
+            <td><button onclick="appendToDisplay('*')">×</button></td>
+            <td><button onclick="appendToDisplay('-')">-</button></td>
+        </tr>
+        <tr>
+            <td><button onclick="appendToDisplay('7')">7</button></td>
+            <td><button onclick="appendToDisplay('8')">8</button></td>
+            <td><button onclick="appendToDisplay('9')">9</button></td>
+            <td rowspan="4"><button onclick="calculate()" style="height: 220px;">=</button></td>
+        </tr>
+        <tr>
+            <td><button onclick="appendToDisplay('4')">4</button></td>
+            <td><button onclick="appendToDisplay('5')">5</button></td>
+            <td><button onclick="appendToDisplay('6')">6</button></td>
+        </tr>
+        <tr>
+            <td><button onclick="appendToDisplay('1')">1</button></td>
+            <td><button onclick="appendToDisplay('2')">2</button></td>
+            <td><button onclick="appendToDisplay('3')">3</button></td>
+        </tr>
+        <tr>
+            <td colspan="2"><button onclick="appendToDisplay('0')" style="width: 120px;">0</button></td>
+            <td><button onclick="appendToDisplay('.')">.</button></td>
+        </tr>
+        <tr>
+            <td colspan="4"><button onclick="appendToDisplay('+')" style="width: 100%;">+</button></td>
+        </tr>
+    </table>
+
+    <script type="text/javascript" src="../static/js/calculator.js"></script>
+</body> 
 </html>
