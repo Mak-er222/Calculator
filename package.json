@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "shx mkdir -p dist/css dist/js && shx cp templates/calculator.html dist/index.html && shx cp src/css/calculator.css dist/css/ && shx cp src/js/calculator.js dist/js/",
-    "serve": "node server.js"
+    "build": "rm -rf dist && mkdir -p dist/css dist/js && cp templates/calculator.html dist/index.html && cp src/css/* dist/css/ && cp src/js/* dist/js/",
+    "predeploy": "npm run build"
   },
   "keywords": [],
   "author": "",
